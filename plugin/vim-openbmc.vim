@@ -20,8 +20,12 @@ if !exists("g:openbmc_get_git_root_cmd")
   let g:openbmc_get_git_root_cmd = "git rev-parse --show-toplevel | xargs echo -n"
 endif
 
+if !exists("g:openbmc_remote_path")
+  let g:openbmc_remote_path = "github.com/openbmc"
+endif
+
 if !exists("g:openbmc_check_remote_cmd")
-  let g:openbmc_check_remote_cmd = "git remote -v | grep -i 'github.com/openbmc'"
+  let g:openbmc_check_remote_cmd = "git remote -v | grep -i '" . g:openbmc_remote_path . "'"
 endif
 
 if !exists("g:openbmc_crumb_name")
@@ -72,20 +76,20 @@ function! IsOpenbmcProject()
   " Get git info
   let l:git_root = system(g:openbmc_get_git_root_cmd)
 
-  " No git repo
-  if l:git_root =~ "fatal"
+  " No git repo (match ignore case)
+  if l:git_root =~? "fatal"
     return 0
   endif
 
   " Found crumb in git root
   if filereadable(l:git_root . "/" . g:openbmc_crumb_name)
-    return 1
+    return 2
   endif
 
   " Check for remotes
   let l:openbmc_remotes = system(g:openbmc_check_remote_cmd)
-  if strlen(l:openbmc_remotes) > strlen(g:openbmc_check_remote_cmd)
-    return 1
+  if l:openbmc_remotes =~? g:openbmc_remote_path
+    return 3
   endif
 
   return 0
