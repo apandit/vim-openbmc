@@ -47,7 +47,10 @@ function! OpenbmcApplyAstyle()
     " Set astyle as the format program
     let &formatprg=g:openbmc_astyle_cmd
     " Format entire file on write
-    autocmd BufWritePre <buffer> :normal gggqG
+    " Opt-in (requires specific disable)
+    if !(exists("g:openbmc_disable_formatonsave") && g:openbmc_disable_formatonsave = 1)
+      autocmd BufWritePre <buffer> :normal gggqG
+    endif
   endif
 endfunction
 

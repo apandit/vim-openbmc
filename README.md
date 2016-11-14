@@ -33,6 +33,13 @@ To force openbmc settings on current buffer: `:call UseOpenbmcSettings()`
 To always use openbmc settings on all files, add this to your vimrc before
 adding the plugin: `let g:openbmc_make_settings_global = 1`
 
+### Options ###
+
+* `g:openbmc_disable_formatonsave`: Disables Astyle formatting on c and cpp
+  files on save
+* `g:openbmc_make_settings_global`: Applies openbmc settings to all buffers. Not
+  recommended except for testing.
+
 ## Changelog ##
 
 ### 0.1 ###
