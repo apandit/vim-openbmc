@@ -95,9 +95,12 @@ function! IsOpenbmcProject()
   return 0
 endfunction
 
-" Applies openbmc settings
+" Applies openbmc settings and adds buffer local variable
 function! UseOpenbmcSettings()
   doautocmd User SignalOpenbmc
+  if !exists("b:is_openbmc_buffer")
+    let b:is_openbmc_buffer = 1
+  endif
 endfunction
 
 function! CheckAndUseOpenbmcSettings()
